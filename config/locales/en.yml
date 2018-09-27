@@ -7,4 +7,4 @@ en:
     error_service_message: "searching Digital Selections"
     no_results_service_message: "a different search"
     no_results_link: "http://169.226.92.29:8080/catalog"
-    loaded_link: "http://169.226.92.29:8080catalog?q="
+    loaded_link: "http://169.226.92.29:8080/catalog?q="
