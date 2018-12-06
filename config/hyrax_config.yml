@@ -1,3 +1,3 @@
 defaults: &defaults
-  base_url: "http://169.226.92.29:8080/catalog"
-  loaded_link: "http://169.226.92.29:8080/catalog"
+  base_url: "http://lib-espy-ws-p101.its.albany.edu/catalog"
+  loaded_link: "http://lib-espy-ws-p101.its.albany.edu/catalog"
