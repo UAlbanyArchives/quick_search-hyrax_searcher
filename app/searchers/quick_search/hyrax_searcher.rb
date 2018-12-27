@@ -44,7 +44,7 @@ module QuickSearch
     end
 
     def base_url
-      "http://lib-espy-ws-p101.its.albany.edu/catalog"
+      "https://archives.albany.edu/catalog"
     end
 
     def parameters
@@ -64,7 +64,7 @@ module QuickSearch
     end
 
     def collection_builder(uri)
-      collection_link = URI::join("http://lib-espy-ws-p101.its.albany.edu/catalog" + uri.tr(".", "-"))
+      collection_link = URI::join("https://archives.albany.edu/catalog" + uri.tr(".", "-"))
 
       collection_link
     end
@@ -74,7 +74,7 @@ module QuickSearch
     end
 
     def loaded_link
-      "http://lib-espy-ws-p101.its.albany.edu/catalog?search_field=all_fields&q=" + http_request_queries['not_escaped']
+      "https://archives.albany.edu/catalog?search_field=all_fields&q=" + http_request_queries['not_escaped']
     end
 
   end
