@@ -1,7 +1,8 @@
 module QuickSearch
   class HyraxSearcher < QuickSearch::Searcher
-
+   
     def search
+      @http.ssl_config.verify_mode=(OpenSSL::SSL::VERIFY_NONE)
       resp = @http.get(base_url, parameters.to_query)
       @response = JSON.parse(resp.body)
     end
