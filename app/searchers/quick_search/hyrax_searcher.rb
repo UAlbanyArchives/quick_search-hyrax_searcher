@@ -24,17 +24,19 @@ module QuickSearch
             result.date = value['date_created_tesim'][0]
           end
           if value.key?('resource_type_tesim')
-            result.author = value['resource_type_tesim'][0]
+            result.format = value['resource_type_tesim'][0]
           end
           if value.key?('thumbnail_path_ss')
             result.thumbnail = URI::join(base_url, value['thumbnail_path_ss']).to_s
           end
-          #if value.key?('collection_tesim')
-            #result.collection = [value['collection_tesim'][0], collection_builder(value['collection_number_tesim'][0]).to_s]
-          #end
-          #if value.key?('description_tesim')
-            #result.description = value['description_tesim'][0]
-          #end
+          if value.key?('collection_tesim')
+            result.collection = [value['collection_tesim'][0], collection_builder(value['collection_number_tesim'][0]).to_s]
+          end
+          
+          if value.key?('collecting_area_tesim')
+            result.collecting_area = value['collecting_area_tesim'][0]
+          end
+          
 
           @results_list << result
         end
@@ -65,7 +67,7 @@ module QuickSearch
     end
 
     def collection_builder(uri)
-      collection_link = URI::join("https://archives.albany.edu/catalog" + uri.tr(".", "-"))
+      collection_link = URI::join("https://archives.albany.edu/description/catalog/" + uri.tr(".", "-"))
 
       collection_link
     end
