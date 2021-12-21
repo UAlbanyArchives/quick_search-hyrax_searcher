@@ -1,10 +1,10 @@
 en:
   hyrax_search:
-    display_name: "Digital Selections"
-    short_display_name: "Digital Selections"
-    search_form_placeholder: "Search Digital Selections"
-    module_callout: "Search Digital Selections"
-    error_service_message: "searching Digital Selections"
+    display_name: "Online Content"
+    short_display_name: "Online Content"
+    search_form_placeholder: "Search Online Content"
+    module_callout: "Search Online Content"
+    error_service_message: "searching Online Content"
     no_results_service_message: "a different search"
     no_results_link: "https://archives.albany.edu/catalog"
     loaded_link: "https://archives.albany.edu/catalog?q="
