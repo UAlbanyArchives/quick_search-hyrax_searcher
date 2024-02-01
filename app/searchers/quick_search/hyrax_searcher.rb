@@ -1,12 +1,14 @@
+require 'nokogiri'
+
 module QuickSearch
   class HyraxSearcher < QuickSearch::Searcher
-   
+    
     def search
       @http.ssl_config.verify_mode=(OpenSSL::SSL::VERIFY_NONE)
       resp = @http.get(base_url, parameters.to_query)
       @response = JSON.parse(resp.body)
     end
-
+    
     def results
       if results_list
         results_list
@@ -15,27 +17,28 @@ module QuickSearch
         @results_list = []
 
         #@match_fields = ['title_ssm', '']
-
+	
         @response['data'].each do |value|
           result = OpenStruct.new
           #result.title = value['title_tesim'][0]
-          result.title = value['attributes']['title']
+	  result.title = Nokogiri::HTML(value['attributes']['title']).text
           result.link = link_builder(value)
+          
           if value['attributes'].key?('date_created_tesim')
-            result.date = value['attributes']['date_created_tesim']['attributes']['value']
+            result.date = Nokogiri::HTML(value['attributes']['date_created_tesim']['attributes']['value']).text
           end
           if value['attributes'].key?('resource_type_tesim')
-            result.format = value['attributes']['resource_type_tesim']['attributes']['value']
+            result.format = Nokogiri::HTML(value['attributes']['resource_type_tesim']['attributes']['value']).text
           end
           if value['attributes'].key?('thumbnail_path_ss')
             result.thumbnail = URI::join(base_url, value['attributes']['thumbnail_path_ss']['attributes']['value']).to_s
           end
           if value['attributes'].key?('collection_tesim')
-            result.collection = [value['attributes']['collection_tesim']['attributes']['value'], collection_builder(value['attributes']['collection_number_tesim']['attributes']['value']).to_s]
+            result.collection = [Nokogiri::HTML(value['attributes']['collection_tesim']['attributes']['value']).text, collection_builder(Nokogiri::HTML(value['attributes']['collection_number_tesim']['attributes']['value']).text).to_s]
           end
           
           if value['attributes'].key?('collecting_area_tesim')
-            result.collecting_area = value['attributes']['collecting_area_tesim']['attributes']['value']
+            result.collecting_area = Nokogiri::HTML(value['attributes']['collecting_area_tesim']['attributes']['value']).text
           end
           
 
@@ -46,7 +49,7 @@ module QuickSearch
       end
 
     end
-
+    
     def base_url
       "https://archives.albany.edu/catalog"
     end
@@ -68,6 +71,7 @@ module QuickSearch
     end
 
     def collection_builder(uri)
+      #collection_link = uri
       collection_link = URI::join("https://archives.albany.edu/description/catalog/" + uri.tr(".", "-"))
 
       collection_link
