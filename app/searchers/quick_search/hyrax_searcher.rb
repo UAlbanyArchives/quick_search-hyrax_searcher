@@ -16,25 +16,26 @@ module QuickSearch
 
         #@match_fields = ['title_ssm', '']
 
-        @response['response']['docs'].each do |value|
+        @response['data'].each do |value|
           result = OpenStruct.new
-          result.title = value['title_tesim'][0]
+          #result.title = value['title_tesim'][0]
+          result.title = value['attributes']['title']
           result.link = link_builder(value)
-          if value.key?('date_created_tesim')
-            result.date = value['date_created_tesim'][0]
+          if value['attributes'].key?('date_created_tesim')
+            result.date = value['attributes']['date_created_tesim']['attributes']['value']
           end
-          if value.key?('resource_type_tesim')
-            result.format = value['resource_type_tesim'][0]
+          if value['attributes'].key?('resource_type_tesim')
+            result.format = value['attributes']['resource_type_tesim']['attributes']['value']
           end
-          if value.key?('thumbnail_path_ss')
-            result.thumbnail = URI::join(base_url, value['thumbnail_path_ss']).to_s
+          if value['attributes'].key?('thumbnail_path_ss')
+            result.thumbnail = URI::join(base_url, value['attributes']['thumbnail_path_ss']['attributes']['value']).to_s
           end
-          if value.key?('collection_tesim')
-            result.collection = [value['collection_tesim'][0], collection_builder(value['collection_number_tesim'][0]).to_s]
+          if value['attributes'].key?('collection_tesim')
+            result.collection = [value['attributes']['collection_tesim']['attributes']['value'], collection_builder(value['attributes']['collection_number_tesim']['attributes']['value']).to_s]
           end
           
-          if value.key?('collecting_area_tesim')
-            result.collecting_area = value['collecting_area_tesim'][0]
+          if value['attributes'].key?('collecting_area_tesim')
+            result.collecting_area = value['attributes']['collecting_area_tesim']['attributes']['value']
           end
           
 
@@ -61,7 +62,7 @@ module QuickSearch
     end
 
     def link_builder(value)
-      link = URI::join(base_url, +"/concern/" + value['has_model_ssim'][0].downcase + "s/" + value['id']).to_s
+      link = URI::join(base_url, +"/concern/" + value['type'].downcase + "s/" + value['id']).to_s
 
       link
     end
@@ -73,7 +74,7 @@ module QuickSearch
     end
 
     def total
-      @response['response']['pages']['total_count'].to_i
+      @response['meta']['pages']['total_count'].to_i
     end
 
     def loaded_link
